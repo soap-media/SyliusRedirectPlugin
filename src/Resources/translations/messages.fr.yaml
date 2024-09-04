@@ -1,30 +1,33 @@
 setono_sylius_redirect:
     ui:
-        redirects: 'Redirections'
-        manage_redirects: 'Gérez les redirections'
-        new_redirect: 'Créer une redirection'
-        edit_redirect: 'Modifier une redirection'
-        source: 'Source'
-        destination: 'Destination'
-        permanent: 'Permanente'
-        count: 'Nombre'
-        last_accessed: 'Dernier accès'
-        enabled: 'Activée'
-
+        count: Nombre
+        destination: Destination
+        edit_redirect: Modifier une redirection
+        enabled: Activée
+        last_accessed: Dernier accès
+        manage_redirects: Gérez les redirections
+        new_redirect: Créer une redirection
+        permanent: Permanente
+        redirects: Redirections
+        source: Source
     menu:
         admin:
             main:
                 configuration:
-                    redirects: 'Redirections'
-
+                    redirects: Redirections
     form:
-        add_automatic_redirect: 'Créer automatiquement une redirection'
+        add_automatic_redirect: Créer automatiquement une redirection
         redirect:
-            source: 'Source'
-            source_placeholder: '/fr_FR/source'
-            destination: 'Destination'
-            destination_placeholder: '/fr_FR/destination ou https://destination.externe/'
-            permanent: 'Permanente'
-            enabled: 'Activée'
-            only_404: 'Rediriger seulement si la source retourne une 404'
             channels: Canaux
+            channels_help: Si vous n'activez aucun canal, la redirection fonctionnera sur tous les canaux
+            destination: Destination
+            destination_placeholder: /fr_FR/destination ou https://destination.externe/
+            enabled: Activée
+            only_404: Rediriger seulement si la source retourne une 404
+            only_404_help: Si cette option est activée, la redirection ne sera appliquée que si le chemin que vous avez entré dans la source retourne une 404 (non trouvé)
+            permanent: Permanente (redirection 301 au lieu de 302)
+            permanent_help: La redirection la plus utilisée est une redirection permanente (301). C'est également celle recommandée à des fins de référencement
+            source: Source
+            source_placeholder: /fr_FR/source
+            keep_query_string: Conserver la chaîne de requête (Query string)
+            keep_query_string_help: 'Si cette option est activée, la redirection conservera la chaîne de requête, par exemple /fr_FR/source?q=ts vous redirigera vers la destination en conservant tous les paramètres de la requête : /fr_FR/destination?q=ts'
