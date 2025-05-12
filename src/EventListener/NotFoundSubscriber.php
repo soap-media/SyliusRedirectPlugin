@@ -84,9 +84,8 @@ class NotFoundSubscriber implements EventSubscriberInterface, LoggerAwareInterfa
 
         if ($lastRedirect->getDestination() === $request->getPathInfo()) {
             $this->logger->error('Infinite loop detected', [
-                'id' => $lastRedirect->getId(),
-                'source' => $lastRedirect->getSource(),
-                'destination' => $lastRedirect->getDestination(),
+                'url' => $request->getUri(),
+                'redirectId' => $lastRedirect->getId(),
             ]);
 
             return;
