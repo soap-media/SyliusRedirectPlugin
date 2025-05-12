@@ -65,7 +65,7 @@ final class ControllerSubscriber implements EventSubscriberInterface
         $lastRedirect = $redirectionPath->last();
         Assert::notNull($lastRedirect);
 
-        if ($lastRedirect->getDestination() === $request->getPathInfo()){
+        if ($lastRedirect->getDestination() === $request->getPathInfo()) {
             return;
         }
 
