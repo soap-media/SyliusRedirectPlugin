@@ -76,6 +76,10 @@ class NotFoundSubscriber implements EventSubscriberInterface
         $lastRedirect = $redirectionPath->last();
         Assert::notNull($lastRedirect);
 
+        if ($lastRedirect->getDestination() === $request->getPathInfo()){
+            return;
+        }
+
         $event->setResponse(self::getRedirectResponse($lastRedirect, $request->getQueryString()));
     }
 }
