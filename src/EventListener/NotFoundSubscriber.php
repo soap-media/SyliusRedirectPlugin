@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Setono\SyliusRedirectPlugin\EventListener;
 
 use Doctrine\Persistence\ObjectManager;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolverInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Channel\Context\ChannelNotFoundException;
@@ -15,9 +18,11 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Webmozart\Assert\Assert;
 
-class NotFoundSubscriber implements EventSubscriberInterface
+class NotFoundSubscriber implements EventSubscriberInterface, LoggerAwareInterface
 {
     use RedirectResponseTrait;
+
+    private LoggerInterface $logger;
 
     private ObjectManager $objectManager;
 
@@ -30,6 +35,7 @@ class NotFoundSubscriber implements EventSubscriberInterface
         ChannelContextInterface $channelContext,
         RedirectionPathResolverInterface $redirectionPathResolver
     ) {
+        $this->logger = new NullLogger();
         $this->objectManager = $objectManager;
         $this->channelContext = $channelContext;
         $this->redirectionPathResolver = $redirectionPathResolver;
@@ -77,9 +83,20 @@ class NotFoundSubscriber implements EventSubscriberInterface
         Assert::notNull($lastRedirect);
 
         if ($lastRedirect->getDestination() === $request->getPathInfo()) {
+            $this->logger->error('Infinite loop detected', [
+                'id' => $lastRedirect->getId(),
+                'source' => $lastRedirect->getSource(),
+                'destination' => $lastRedirect->getDestination(),
+            ]);
+
             return;
         }
 
         $event->setResponse(self::getRedirectResponse($lastRedirect, $request->getQueryString()));
+    }
+
+    public function setLogger(LoggerInterface $logger): void
+    {
+        $this->logger = $logger;
     }
 }
