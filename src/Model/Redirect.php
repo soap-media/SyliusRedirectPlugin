@@ -8,38 +8,69 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Sylius\Component\Channel\Model\ChannelInterface;
 use Sylius\Component\Resource\Model\TimestampableTrait;
 use Sylius\Component\Resource\Model\ToggleableTrait;
 
+#[ORM\MappedSuperclass]
+#[ORM\Table(name: 'setono_sylius_redirect__redirect')]
+#[ORM\Index(columns: ['last_accessed'])]
+#[ORM\Index(columns: ['enabled'])]
+#[ORM\Index(columns: ['only_404'])]
+#[ORM\Index(name: 'findOneEnabledBySource_idx', columns: ['source', 'enabled'])]
+#[ORM\Index(name: 'findOne404EnabledBySource_idx', columns: ['source', 'enabled', 'only_404'])]
 class Redirect implements RedirectInterface
 {
     use TimestampableTrait;
-
     use ToggleableTrait;
 
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     protected ?int $id = null;
 
+    #[ORM\Column(type: 'string')]
     protected ?string $source = null;
 
+    #[ORM\Column(type: 'string')]
     protected ?string $destination = null;
 
+    #[ORM\Column(type: 'boolean')]
     protected bool $permanent = true;
 
+    #[ORM\Column(type: 'integer')]
     protected int $count = 0;
 
+    #[ORM\Column(name: 'last_accessed', type: 'datetime', nullable: true)]
     protected ?DateTimeInterface $lastAccessed = null;
 
+    #[ORM\Column(name: 'enabled', type: 'boolean')]
+    protected bool $enabled = true;
+
+    #[ORM\Column(name: 'only_404', type: 'boolean')]
     protected bool $only404 = true;
 
+    #[ORM\Column(name: 'keep_query_string', type: 'boolean', options: ['default' => 0])]
     protected bool $keepQueryString = false;
 
+    #[ORM\Column(name: 'created_at', type: 'datetime')]
+    protected ?DateTimeInterface $createdAt = null;
+
+    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    protected ?DateTimeInterface $updatedAt = null;
+
     /** @var Collection<array-key, ChannelInterface> */
-    protected $channels;
+    #[ORM\ManyToMany(targetEntity: ChannelInterface::class)]
+    #[ORM\JoinTable(name: 'setono_sylius_redirect__redirect_channels')]
+    #[ORM\JoinColumn(name: 'redirect_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'channel_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    protected Collection $channels;
 
     public function __construct()
     {
         $this->channels = new ArrayCollection();
+        $this->createdAt = new DateTime();
     }
 
     public function getId(): ?int
