@@ -19,9 +19,9 @@
         "psr/log": "^2.0 || ^3.0",
         "sylius/channel-bundle": "^2.0",
         "sylius/core-bundle": "^2.0",
-        "sylius/grid-bundle": "^2.0",
+        "sylius/grid-bundle": "^1.13",
         "sylius/product-bundle": "^2.0",
-        "sylius/resource-bundle": "^2.0",
+        "sylius/resource-bundle": "^1.12",
         "sylius/taxonomy-bundle": "^2.0",
         "sylius/ui-bundle": "^2.0",
         "symfony/config": "^6.4 || ^7.1",
@@ -39,7 +39,7 @@
         "phpspec/phpspec": "^7.3",
         "phpunit/phpunit": "^10.5 || ^11.0",
         "sylius/sylius": "~2.0.0",
-        "sylius/test-application": "^2.0",
+        "sylius/test-application": "^2.0@alpha",
         "symfony/debug-bundle": "^6.4 || ^7.1",
         "symfony/dotenv": "^6.4 || ^7.1",
         "symfony/intl": "^6.4 || ^7.1",
@@ -59,7 +59,10 @@
     },
     "config": {
         "allow-plugins": {
-            "symfony/thanks": false
+            "symfony/thanks": false,
+            "symfony/runtime": true,
+            "php-http/discovery": false,
+            "symfony/flex": true
         },
         "sort-packages": true
     }
