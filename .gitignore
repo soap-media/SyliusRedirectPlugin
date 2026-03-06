@@ -11,3 +11,4 @@
 /phpspec.yml
 /.phpunit.result.cache
 .idea/
+/docs/
