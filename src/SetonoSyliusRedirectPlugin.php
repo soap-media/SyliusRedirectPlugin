@@ -4,29 +4,12 @@ declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin;
 
-use Sylius\Bundle\CoreBundle\Application\SyliusPluginTrait;
-use Sylius\Bundle\ResourceBundle\AbstractResourceBundle;
-use Sylius\Bundle\ResourceBundle\SyliusResourceBundle;
+use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
-final class SetonoSyliusRedirectPlugin extends AbstractResourceBundle
+final class SetonoSyliusRedirectPlugin extends AbstractBundle
 {
-    use SyliusPluginTrait;
-
-    /**
-     * @inheritdoc
-     */
-    public function getSupportedDrivers(): array
+    public function getPath(): string
     {
-        return [
-            SyliusResourceBundle::DRIVER_DOCTRINE_ORM,
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getModelNamespace(): string
-    {
-        return 'Setono\SyliusRedirectPlugin\Model';
+        return \dirname(__DIR__);
     }
 }
