@@ -1,5 +1,0 @@
-imports:
-    - { resource: "@SetonoSyliusRedirectPlugin/Resources/config/app/config.yaml" }
-
-setono_sylius_redirect:
-    remove_after: 1
