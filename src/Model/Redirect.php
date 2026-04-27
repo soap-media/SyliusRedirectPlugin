@@ -10,8 +10,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Sylius\Component\Channel\Model\ChannelInterface;
-use Sylius\Component\Resource\Model\TimestampableTrait;
-use Sylius\Component\Resource\Model\ToggleableTrait;
 
 #[ORM\MappedSuperclass]
 #[ORM\Table(name: 'setono_sylius_redirect__redirect')]
@@ -22,9 +20,6 @@ use Sylius\Component\Resource\Model\ToggleableTrait;
 #[ORM\Index(name: 'findOne404EnabledBySource_idx', columns: ['source', 'enabled', 'only_404'])]
 class Redirect implements RedirectInterface
 {
-    use TimestampableTrait;
-    use ToggleableTrait;
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -134,6 +129,26 @@ class Redirect implements RedirectInterface
         $this->setLastAccessed(new DateTime());
     }
 
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(?bool $enabled): void
+    {
+        $this->enabled = (bool) $enabled;
+    }
+
+    public function enable(): void
+    {
+        $this->enabled = true;
+    }
+
+    public function disable(): void
+    {
+        $this->enabled = false;
+    }
+
     public function isOnly404(): bool
     {
         return $this->only404;
@@ -176,5 +191,25 @@ class Redirect implements RedirectInterface
     public function setKeepQueryString(bool $keepQueryString): void
     {
         $this->keepQueryString = $keepQueryString;
+    }
+
+    public function getCreatedAt(): ?DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?DateTimeInterface $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    public function getUpdatedAt(): ?DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?DateTimeInterface $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
     }
 }
